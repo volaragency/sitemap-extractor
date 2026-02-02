@@ -1,0 +1,237 @@
+########################################
+# OS / System
+########################################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+########################################
+# General temp / logs
+########################################
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+*.orig
+*.pid
+*.seed
+*.cache
+*.cache.*
+*.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs/
+log/
+tmp/
+temp/
+.cache/
+
+########################################
+# Environment / secrets
+########################################
+.env
+.env.*
+!.env.example
+!.env.sample
+*.local
+*.secret
+*.secrets
+*.pem
+*.key
+*.p12
+*.pfx
+
+########################################
+# IDE / Editors
+########################################
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# JetBrains / other
+.history/
+*.code-workspace
+
+########################################
+# AI / assistants / tooling
+########################################
+.claude/
+.cursor/
+.copilot/
+.windsurf/
+.aider*
+.llm/
+.prompt_cache/
+.prompts/
+.prompts-cache/
+.prompts_cache/
+
+########################################
+# Node / Frontend (Webpack/Vite/etc.)
+########################################
+node_modules/
+bower_components/
+.pnp/
+.pnp.js
+.pnpm-store/
+.npm/
+.yarn/
+.yarn-cache/
+.yarnrc.yml
+
+# Build outputs
+dist/
+build/
+out/
+output/
+public/build/
+public/dist/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+*.map
+
+# Vite / Next / Nuxt / Gatsby
+.vite/
+.next/
+.nuxt/
+.output/
+.gatsby-cache/
+
+########################################
+# PHP / Composer
+########################################
+vendor/
+composer.phar
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+
+# PHPCS / PHPStan / Psalm caches
+.php_cs.cache
+.php-cs-fixer.cache
+phpstan.neon
+phpstan.neon.dist
+.phpstan.cache/
+psalm.xml
+psalm.xml.dist
+.psalm/
+.phpstorm.meta.php
+
+########################################
+# WordPress (common)
+########################################
+# Core (if WP core is in repo, consider NOT ignoring wp-admin/wp-includes)
+wp-content/cache/
+wp-content/upgrade/
+wp-content/uploads/
+wp-content/ai1wm-backups/
+wp-content/backups/
+wp-content/wflogs/
+wp-content/debug.log
+
+# Common WP plugin caches
+wp-content/plugins/*/cache/
+wp-content/plugins/*/logs/
+
+########################################
+# Python
+########################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.venv/
+venv/
+ENV/
+env/
+
+########################################
+# Laravel / PHP frameworks (optional)
+########################################
+storage/
+bootstrap/cache/
+public/storage
+.phpunit.result.cache
+
+########################################
+# CodeIgniter (optional)
+########################################
+application/logs/
+writable/
+system/cache/
+
+########################################
+# Docker / local dev
+########################################
+docker-compose.override.yml
+*.local.yml
+
+########################################
+# Archives / binaries
+########################################
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.iso
+*.dmg
+*.exe
+
+########################################
+# Media / generated assets (optional)
+# Uncomment if you do NOT want to version these
+########################################
+# *.mp4
+# *.mov
+# *.avi
+# *.mkv
+# *.psd
+# *.ai
+
+########################################
+# Project-specific overrides
+# Add your own patterns below
+########################################
+
+
+# Windows reserved device names (Claude Code / Git Bash can accidentally create these)
+nul
+NUL
+**/nul
+**/NUL

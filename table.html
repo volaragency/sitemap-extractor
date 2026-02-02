@@ -1,0 +1,518 @@
+<!--
+  Sitemap Extractor - Table Viewer
+
+  Developed by: Volar Agency
+  Website: https://thevolar.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sitemap Viewer - Volar Agency</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f7fafc;
+      color: #2d3748;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+    }
+
+    .header {
+      background: white;
+      padding: 28px 32px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #1a202c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+    }
+
+    .sitemap-url {
+      font-size: 14px;
+      color: #718096;
+      word-break: break-all;
+      padding: 12px 16px;
+      background: #f7fafc;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      border: 1px solid #e2e8f0;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 32px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .controls {
+      background: white;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 320px;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .btn {
+      padding: 12px 24px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.secondary {
+      background: #718096;
+    }
+
+    .btn.secondary:hover {
+      background: #4a5568;
+    }
+
+    .btn.success {
+      background: #48bb78;
+    }
+
+    .btn.success:hover {
+      background: #38a169;
+    }
+
+    .btn:disabled {
+      background: #cbd5e0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: calc(100vh - 400px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #f7fafc;
+    }
+
+    th {
+      padding: 16px 20px;
+      text-align: left;
+      font-weight: 700;
+      color: #4a5568;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    th:hover {
+      background: #edf2f7;
+    }
+
+    th.sortable::after {
+      content: ' ⇅';
+      color: #cbd5e0;
+      font-size: 12px;
+    }
+
+    th.sorted-asc::after {
+      content: ' ↑';
+      color: #667eea;
+    }
+
+    th.sorted-desc::after {
+      content: ' ↓';
+      color: #667eea;
+    }
+
+    td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: #f7fafc;
+    }
+
+    .row-number {
+      color: #a0aec0;
+      font-weight: 600;
+      min-width: 60px;
+    }
+
+    .url-cell {
+      max-width: 600px;
+    }
+
+    .url-link {
+      color: #667eea;
+      text-decoration: none;
+      word-break: break-all;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .url-link:hover {
+      color: #5568d3;
+      text-decoration: underline;
+    }
+
+    .image-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #ebf8ff;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #2c5282;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .image-badge:hover {
+      background: #bee3f8;
+      transform: translateY(-1px);
+    }
+
+    .date-cell {
+      color: #718096;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 12px;
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .priority-high {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+
+    .priority-medium {
+      background: #bee3f8;
+      color: #2c5282;
+    }
+
+    .priority-low {
+      background: #e2e8f0;
+      color: #718096;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 16px;
+      color: #718096;
+    }
+
+    .error-message {
+      background: #fff5f5;
+      color: #c53030;
+      padding: 24px;
+      border-radius: 8px;
+      margin: 24px;
+      border-left: 4px solid #fc8181;
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: #1a202c;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      display: none;
+      align-items: center;
+      gap: 12px;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+      font-size: 14px;
+    }
+
+    .toast.show {
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .filter-info {
+      font-size: 13px;
+      color: #718096;
+      padding: 12px 24px;
+      background: #ebf8ff;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .footer {
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      padding: 24px;
+      text-align: center;
+      margin-top: 40px;
+      box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #718096;
+    }
+
+    .footer-link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: #5568d3;
+      text-decoration: underline;
+    }
+
+    .footer-icon {
+      font-size: 20px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f7fafc;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🗺️ Sitemap Viewer</h1>
+      <div class="sitemap-url" id="sitemapUrl">Loading...</div>
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-label">Total URLs</span>
+          <span class="stat-value" id="totalUrls">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Visible</span>
+          <span class="stat-value" id="visibleUrls">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Images</span>
+          <span class="stat-value" id="totalImages">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Type</span>
+          <span class="stat-value" id="sitemapType" style="font-size: 16px">-</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input 
+        type="text" 
+        class="search-box" 
+        id="searchBox" 
+        placeholder="🔍 Search URLs... (press Enter)"
+      >
+      <button class="btn" id="searchBtn">Search</button>
+      <button class="btn secondary" id="clearBtn">Clear</button>
+      <button class="btn success" id="exportBtn">💾 Export CSV</button>
+      <button class="btn secondary" id="copyAllBtn">📋 Copy All</button>
+    </div>
+
+    <div id="filterInfo" class="filter-info" style="display: none"></div>
+
+    <div class="table-container">
+      <div class="table-wrapper">
+        <div id="loadingState" class="loading">
+          <div class="spinner"></div>
+          <div class="loading-text">Loading sitemap data...</div>
+        </div>
+        <div id="errorState" style="display: none"></div>
+        <table id="dataTable" style="display: none">
+          <thead>
+            <tr>
+              <th class="sortable" data-column="index">#</th>
+              <th class="sortable" data-column="url">URL</th>
+              <th class="sortable" data-column="images">Images</th>
+              <th class="sortable" data-column="lastmod">Last Modified</th>
+              <th class="sortable" data-column="priority">Priority</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <span class="footer-icon">🚀</span>
+      <span>Developed with excellence by</span>
+      <a href="https://thevolar.com" target="_blank" class="footer-link">Volar Agency</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="table.js"></script>
+</body>
+</html>

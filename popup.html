@@ -1,0 +1,425 @@
+<!--
+  Sitemap Extractor - Popup Interface
+
+  Developed by: Volar Agency
+  Website: https://thevolar.com
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sitemap Extractor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 420px;
+      min-height: 300px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1a1a1a;
+    }
+
+    .container {
+      background: white;
+      border-radius: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 24px 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .content {
+      padding: 24px 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .manual-input-wrapper {
+      position: relative;
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .manual-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      transition: all 0.2s;
+    }
+
+    .manual-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .manual-input::placeholder {
+      color: #a0aec0;
+    }
+
+    .manual-scan-btn {
+      padding: 12px 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .manual-scan-btn:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-1px);
+    }
+
+    .manual-scan-btn:active {
+      transform: translateY(0);
+    }
+
+    .manual-scan-btn:disabled {
+      background: #cbd5e0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: #a0aec0;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .divider span {
+      padding: 0 12px;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .action-btn {
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn.primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .action-btn.primary:hover:not(:disabled) {
+      background: #5568d3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .action-btn.secondary {
+      background: #f7fafc;
+      color: #4a5568;
+      border: 2px solid #e2e8f0;
+    }
+
+    .action-btn.secondary:hover:not(:disabled) {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .action-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .action-btn.success {
+      background: #48bb78;
+    }
+
+    .status {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .status.show {
+      display: flex;
+    }
+
+    .status.error {
+      background: #fff5f5;
+      color: #c53030;
+      border: 1px solid #feb2b2;
+    }
+
+    .status.success {
+      background: #f0fff4;
+      color: #22543d;
+      border: 1px solid #9ae6b4;
+    }
+
+    .status.info {
+      background: #ebf8ff;
+      color: #2c5282;
+      border: 1px solid #90cdf4;
+    }
+
+    .status.warning {
+      background: #fffaf0;
+      color: #744210;
+      border: 1px solid #fbd38d;
+    }
+
+    .stats {
+      background: #f7fafc;
+      border-radius: 8px;
+      padding: 16px;
+      display: none;
+    }
+
+    .stats.show {
+      display: block;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 13px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: #718096;
+      font-weight: 500;
+    }
+
+    .stat-value {
+      color: #2d3748;
+      font-weight: 600;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .footer {
+      background: #f7fafc;
+      padding: 12px 20px;
+      text-align: center;
+      border-top: 1px solid #e2e8f0;
+      font-size: 11px;
+      color: #718096;
+    }
+
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .log-container {
+      max-height: 150px;
+      overflow-y: auto;
+      background: #f7fafc;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 11px;
+      font-family: 'Courier New', monospace;
+      display: none;
+    }
+
+    .log-container.show {
+      display: block;
+    }
+
+    .log-item {
+      padding: 4px 0;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+
+    .log-item.success {
+      color: #22543d;
+    }
+
+    .log-item.error {
+      color: #c53030;
+    }
+
+    .log-item.info {
+      color: #2c5282;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a0aec0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🗺️ Sitemap Extractor</h1>
+      <p>Intelligent sitemap discovery & extraction</p>
+    </div>
+
+    <div class="content">
+      <!-- Manual Input Section -->
+      <div class="input-group">
+        <label class="input-label">Manual Sitemap URL (Optional)</label>
+        <div class="manual-input-wrapper">
+          <input 
+            type="text" 
+            id="manualUrl" 
+            class="manual-input" 
+            placeholder="https://example.com/sitemap.xml"
+          >
+          <button id="manualScanBtn" class="manual-scan-btn">Scan</button>
+        </div>
+      </div>
+
+      <div class="divider"><span>OR AUTO-DETECT</span></div>
+
+      <!-- Action Buttons -->
+      <div class="button-group">
+        <button id="extractBtn" class="action-btn primary">
+          📋 Extract URLs
+        </button>
+        <button id="viewBtn" class="action-btn secondary" disabled>
+          👁️ View Table
+        </button>
+      </div>
+
+      <!-- Status Message -->
+      <div id="status" class="status"></div>
+
+      <!-- Stats -->
+      <div id="stats" class="stats">
+        <div class="stat-row">
+          <span class="stat-label">Sitemap URL</span>
+          <span class="stat-value" id="sitemapUrl">-</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Total URLs</span>
+          <span class="stat-value" id="urlCount">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Sitemap Type</span>
+          <span class="stat-value" id="sitemapType">-</span>
+        </div>
+      </div>
+
+      <!-- Discovery Log -->
+      <div id="logContainer" class="log-container"></div>
+    </div>
+
+    <div class="footer">
+      Developed by <a href="https://thevolar.com" target="_blank">Volar Agency</a>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
